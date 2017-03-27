@@ -8,6 +8,7 @@ package Frames;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 
@@ -51,7 +52,7 @@ public class AddUser extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        ComBoxSexo = new javax.swing.JComboBox<>();
         txtPais = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
         txtApellido = new javax.swing.JTextField();
@@ -88,7 +89,18 @@ public class AddUser extends javax.swing.JFrame {
 
         jLabel16.setText("Nombre:");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Masculino", "Femenino" }));
+        ComBoxSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Masculino", "Femenino" }));
+        ComBoxSexo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ComBoxSexoActionPerformed(evt);
+            }
+        });
+
+        txtPais.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPaisActionPerformed(evt);
+            }
+        });
 
         jLabel17.setText("Direccion:");
 
@@ -144,6 +156,12 @@ public class AddUser extends javax.swing.JFrame {
 
         jLabel26.setText("Localidad:");
 
+        txttipo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txttipoActionPerformed(evt);
+            }
+        });
+
         txtNumero.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNumeroActionPerformed(evt);
@@ -161,6 +179,11 @@ public class AddUser extends javax.swing.JFrame {
         jLabel28.setText("Fecha de Inscripcion:");
 
         jButton1.setText("Agregar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -183,7 +206,7 @@ public class AddUser extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(txtTelefono)
                                 .addComponent(txtEMail, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(ComBoxSexo, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -256,11 +279,12 @@ public class AddUser extends javax.swing.JFrame {
                     .addComponent(txtPais, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtLocalidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel26)
-                    .addComponent(jLabel27)
-                    .addComponent(FechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(FechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtLocalidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel26)
+                        .addComponent(jLabel27)))
                 .addGap(6, 6, 6)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -285,7 +309,7 @@ public class AddUser extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel21)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addComponent(ComBoxSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(102, 102, 102), new java.awt.Color(51, 51, 51), new java.awt.Color(102, 102, 102), new java.awt.Color(102, 102, 102)));
@@ -336,36 +360,73 @@ public class AddUser extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
-        DBObject busqueda = new BasicDBObject("Nombre",txtNombre.getText());
+         
     }//GEN-LAST:event_txtNombreActionPerformed
 
     private void txtApellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtApellidoActionPerformed
-        DBObject busqueda2 = new BasicDBObject("Apellido",txtApellido.getText());
+       
     }//GEN-LAST:event_txtApellidoActionPerformed
 
     private void txtDireccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDireccionActionPerformed
-        DBObject busqueda3 = new BasicDBObject("Direccion",txtDireccion.getText());
+        
     }//GEN-LAST:event_txtDireccionActionPerformed
 
     private void txtLocalidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLocalidadActionPerformed
-         DBObject busqueda4 = new BasicDBObject("Localidad",txtLocalidad.getText());
+         
     }//GEN-LAST:event_txtLocalidadActionPerformed
 
     private void txtNumeroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNumeroActionPerformed
-        DBObject busqueda5 = new BasicDBObject("Numero",txtNumero.getText());
+        
     }//GEN-LAST:event_txtNumeroActionPerformed
 
     private void txtTelefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTelefonoActionPerformed
-        DBObject busqueda6 = new BasicDBObject("Celular",txtTelefono.getText());
+        
     }//GEN-LAST:event_txtTelefonoActionPerformed
 
     private void txtEMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEMailActionPerformed
-         DBObject busqueda7 = new BasicDBObject("Nombre",txtEMail.getText());        // TODO add your handling code here:
+              // TODO add your handling code here:
     }//GEN-LAST:event_txtEMailActionPerformed
 
     private void txtNumeroInscripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNumeroInscripcionActionPerformed
-        // TODO add your handling code here:
+         
     }//GEN-LAST:event_txtNumeroInscripcionActionPerformed
+
+    private void txttipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txttipoActionPerformed
+         // TODO add your handling code here:
+    }//GEN-LAST:event_txttipoActionPerformed
+
+    private void txtPaisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPaisActionPerformed
+              // TODO add your handling code here:
+    }//GEN-LAST:event_txtPaisActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        BasicDBObject busqueda = new BasicDBObject("Nombre",txtNombre.getText());
+        DBObject busqueda3 = new BasicDBObject("Direccion",txtDireccion.getText());
+        DBObject busqueda4 = new BasicDBObject("Localidad",txtLocalidad.getText());
+        DBObject busqueda5 = new BasicDBObject("Numero",txtNumero.getText());
+        DBObject busqueda6 = new BasicDBObject("Celular",txtTelefono.getText());
+        DBObject busqueda8 = new BasicDBObject("Email",txtEMail.getText());  
+        DBObject busqueda9 = new BasicDBObject("NumInscripcion",txtNumeroInscripcion.getText()); 
+        DBObject busqueda10 = new BasicDBObject("Ti´p",txttipo.getText()); 
+        DBObject busqueda2 = new BasicDBObject("Apellido",txtApellido.getText()); 
+        DBObject busqueda11 = new BasicDBObject("Pais",txtPais.getText());
+        busqueda.put("Nombre",txtNombre.getText());
+        DBCursor cursor1= coleccion.find(busqueda2);
+        DBCursor cursor2= coleccion.find(busqueda3);
+        DBCursor cursor3= coleccion.find(busqueda4);
+        DBCursor cursor4= coleccion.find(busqueda5);
+        DBCursor cursor5= coleccion.find(busqueda6);
+       // DBCursor cursor6= coleccion.find(busqueda7);
+        DBCursor cursor7= coleccion.find(busqueda8);
+        DBCursor cursor8= coleccion.find(busqueda9);
+        DBCursor cursor9= coleccion.find(busqueda10);
+        DBCursor cursor10= coleccion.find(busqueda11);
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void ComBoxSexoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComBoxSexoActionPerformed
+         DBObject busqueda7 = new BasicDBObject("Nombre",ComBoxSexo.getModel());   // TODO add your handling code here:
+    }//GEN-LAST:event_ComBoxSexoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -403,10 +464,10 @@ public class AddUser extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> ComBoxSexo;
     private com.toedter.calendar.JDateChooser FechaNacimiento;
     private com.toedter.calendar.JDateChooser fechaInscripcion;
     private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
