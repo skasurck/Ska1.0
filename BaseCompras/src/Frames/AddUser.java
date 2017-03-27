@@ -11,6 +11,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -20,7 +21,8 @@ public class AddUser extends javax.swing.JFrame {
     
      DB BasedeDatos;
     DBCollection coleccion;
-    BasicDBObject document = new BasicDBObject();
+    
+    BasicDBObject busqueda = new BasicDBObject(); 
 
     /**
      * Creates new form AddUser
@@ -29,7 +31,7 @@ public class AddUser extends javax.swing.JFrame {
         try {
             Mongo mongo = new Mongo("localhost",27017);
             BasedeDatos = mongo.getDB("ska");
-            coleccion = BasedeDatos.getCollection("Usuarios");
+            coleccion = BasedeDatos.getCollection("Usuario");
             System.out.println("coneccion de base de datos exitosa");
         } catch (Exception e) {
         }
@@ -400,32 +402,24 @@ public class AddUser extends javax.swing.JFrame {
     }//GEN-LAST:event_txtPaisActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        BasicDBObject busqueda = new BasicDBObject("Nombre",txtNombre.getText());
-        DBObject busqueda3 = new BasicDBObject("Direccion",txtDireccion.getText());
-        DBObject busqueda4 = new BasicDBObject("Localidad",txtLocalidad.getText());
-        DBObject busqueda5 = new BasicDBObject("Numero",txtNumero.getText());
-        DBObject busqueda6 = new BasicDBObject("Celular",txtTelefono.getText());
-        DBObject busqueda8 = new BasicDBObject("Email",txtEMail.getText());  
-        DBObject busqueda9 = new BasicDBObject("NumInscripcion",txtNumeroInscripcion.getText()); 
-        DBObject busqueda10 = new BasicDBObject("Ti´p",txttipo.getText()); 
-        DBObject busqueda2 = new BasicDBObject("Apellido",txtApellido.getText()); 
-        DBObject busqueda11 = new BasicDBObject("Pais",txtPais.getText());
-        busqueda.put("Nombre",txtNombre.getText());
-        DBCursor cursor1= coleccion.find(busqueda2);
-        DBCursor cursor2= coleccion.find(busqueda3);
-        DBCursor cursor3= coleccion.find(busqueda4);
-        DBCursor cursor4= coleccion.find(busqueda5);
-        DBCursor cursor5= coleccion.find(busqueda6);
-       // DBCursor cursor6= coleccion.find(busqueda7);
-        DBCursor cursor7= coleccion.find(busqueda8);
-        DBCursor cursor8= coleccion.find(busqueda9);
-        DBCursor cursor9= coleccion.find(busqueda10);
-        DBCursor cursor10= coleccion.find(busqueda11);
-        
+                               
+        busqueda.put("Nombre","'"+txtNombre.getText()+"'");
+        busqueda.put("Apellido","'"+txtApellido.getText()+"'");
+        busqueda.put("Direccion","'"+txtDireccion.getText()+"'");
+        busqueda.put("Localidad","'"+txtLocalidad.getText()+"'");
+        busqueda.put("Numero","'"+txtNumero.getText()+"'");
+        busqueda.put("Celular","'"+txtTelefono.getText()+"'");
+        busqueda.put("Sexo","'"+ComBoxSexo.getModel()+"'");
+        busqueda.put("Email","'"+txtEMail.getText()+"'");
+        busqueda.put("NumInscripcion","'"+txtNumeroInscripcion.getText()+"'");
+        busqueda.put("Tipo","'"+txttipo.getText()+"'");
+        busqueda.put("Pais","'"+txtPais.getText()+"'");
+        coleccion.insert(busqueda);
+        JOptionPane.showMessageDialog(null, "Agrego Exitosamente");
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void ComBoxSexoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComBoxSexoActionPerformed
-         DBObject busqueda7 = new BasicDBObject("Nombre",ComBoxSexo.getModel());   // TODO add your handling code here:
+           // TODO add your handling code here:
     }//GEN-LAST:event_ComBoxSexoActionPerformed
 
     /**
